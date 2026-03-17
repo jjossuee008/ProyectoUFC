@@ -5,7 +5,7 @@ package UFC.peleadores;
  * Se podran hacer diferentes funciones a partir de sus estadisticas.
  * 
  * @author Josué Mateos (jjossuee008)
- * @version 1.0 (17032026)
+ * @version 1.5 (17032026)
  */
 public class Peleadores {
 
@@ -137,6 +137,20 @@ public class Peleadores {
 		} else {
 			puestoRanking = Integer.toString(pos);
 		}
+	}
+	
+	/**
+	 * @return Devuelve la posicion del ranking en la que se encuentra el peleador.
+	 */
+	public String getRanking() {
+		return puestoRanking;
+	}
+	
+	/**
+	 * @return Devuelve la categoria en la que se encuentra el peleador.
+	 */
+	public String getCategoria() {
+		return categoriaPeso;
 	}
 	
 }

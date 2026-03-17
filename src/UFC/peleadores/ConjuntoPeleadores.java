@@ -7,7 +7,7 @@ import java.util.List;
  * A partir de {@link Peleadores} podremos crear un almacen donde guardar a todos los peleadores creados si asi lo queremos.
  * Con este almacen podremos realizar una serie de opciones.
  * @author Josué Mateos (jjossuee008)
- * @version (17022026)
+ * @version 1.5 (17022026)
  */
 public class ConjuntoPeleadores {
 	
@@ -60,4 +60,11 @@ public class ConjuntoPeleadores {
 		return listaPeleadores;
 	}
 	
+	/**
+	 * @param index del peleador a devolver.
+	 * @return devuelve un peleador del almacen.
+	 */
+	public Peleadores getElemento(int index) {
+		return listaPeleadores.get(index);
+	}
 }
