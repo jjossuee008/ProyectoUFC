@@ -1,58 +1,63 @@
 package UFC.funciones;
 
-import UFC.peleadores.ConjuntoPeleadores;
+import java.util.List;
+
 import UFC.peleadores.Peleadores;
 import UFC.vistas.VistaGeneral;
 
-/**
- * Carga los datos que se le indiquen y exportara estos datos si asi se desea
- * @aurhor Josué Mateos (jjossuee008)
- * @version 1.0 (18032026)
- */
+/** Clase encargada de la persistencia de datos */
 public class ImportacionArchivo {
-	
-	/** Almacen que guarda a los peleadores */
-	private static ConjuntoPeleadores almacen = new ConjuntoPeleadores();
-	
-	/** Sacara los datos en un archivo fuera del programa */
-	public static void exportar() {
-	    try (java.io.PrintWriter pw = new java.io.PrintWriter("datos.txt")) {
-	        for (Peleadores p : almacen.devolverElementos()) {
-	            // Escribimos los datos básicos separados por ";"
-	            pw.println(p.devolverDatos() + ";" + p.devolverEstadisticas());
-	        }
-	        VistaGeneral.mostrarAviso("Archivo guardado con éxito.");
-	    } catch (java.io.FileNotFoundException e) {
-	        VistaGeneral.mostrarAviso("No se pudo crear el archivo.");
-	    }
-	}
-	
-	/** Añadira los datos de un archivo que indique el usuario */
-	public static void importar() {
-	    java.io.File archivo = new java.io.File("datos.txt");
-	    if (!archivo.exists()) {
-	        VistaGeneral.mostrarAviso("No hay datos previos para cargar.");
+
+	/**
+	 * Emportara los peleadores que se encuentren en el programa.
+	 * @param lista de peleadores del programa.
+	 */
+	public static void exportar(List<Peleadores> lista) {
+	    // 1. Verificación de seguridad: ¿Hay algo que guardar?
+	    if (lista == null || lista.isEmpty()) {
+	        System.out.println("[DEBUG] La lista está vacía, por eso el archivo sale en blanco.");
+	        ControlUFC.buclePrincipal();
 	        return;
 	    }
 
-	    try (java.util.Scanner lector = new java.util.Scanner(archivo)) {
-	        while (lector.hasNextLine()) {
-	            String linea = lector.nextLine();
-	            String[] trozos = linea.split(";"); // Separa el texto por cada ";"
-	            
-	            // Creamos el peleador con los trozos (Ojo: convierte los números)
-	            Peleadores p = new Peleadores(
-	                trozos[0], // Nombre
-	                trozos[1], // Ranking
-	                Integer.parseInt(trozos[2]), // Victorias
-	                0, 0 // Rellenamos el resto con 0 o lo que necesites
-	            );
-	            
-	            almacen.alta(p);
+	    // 2. El bloque try(...) asegura que el archivo se CIERRE al terminar
+	    try (java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter("datos.txt"))) {
+	        
+	        for (Peleadores p : lista) {
+	            // Escribimos los datos puros separados por ";"
+	            pw.println(p.getNombre() + ";" + p.getRanking());
+	            // Este print es para que TÚ veas en la consola que está trabajando
+	            System.out.println("[DEBUG] Escribiendo en archivo a: " + p.getNombre());
+	            ControlUFC.buclePrincipal();
 	        }
-	        VistaGeneral.mostrarAviso("Datos cargados correctamente.");
-	    } catch (Exception e) {
-	        VistaGeneral.mostrarAviso("Error al leer el archivo.");
+	        
+	        pw.flush(); 
+	        
+	    } catch (java.io.IOException e) {
+	        System.out.println("[ERROR] No se pudo escribir: " + e.getMessage());
+	        ControlUFC.buclePrincipal();
 	    }
 	}
+
+    public static List<Peleadores> importar() {
+        List<Peleadores> auxiliar = new java.util.ArrayList<>();
+        java.io.File archivo = new java.io.File("datos.txt");
+
+        if (!archivo.exists()) {
+            VistaGeneral.mostrarAviso("No existe el archivo 'datos.txt' para importar.");
+            return auxiliar;
+        }
+
+        try (java.util.Scanner lector = new java.util.Scanner(archivo)) {
+            while (lector.hasNextLine()) {
+                String[] t = lector.nextLine().split(";");
+                Peleadores p = new Peleadores(t[0], t[1], Integer.parseInt(t[2]), 0, 0);
+                auxiliar.add(p);
+            }
+        } catch (Exception e) {
+            VistaGeneral.mostrarAviso("Error de formato en el archivo.");
+        }
+        return auxiliar;
+    }
 }
+
