@@ -23,7 +23,8 @@ public class ControlUFC {
 	    "Listar ranking",
 	    "Borrar peleador",
 	    "Exportar a archivo",
-	    "Importar desde archivo"
+	    "Importar desde archivo",
+	    "Lista todos los peleadores"
 	);
 	
 	/**
@@ -35,7 +36,7 @@ public class ControlUFC {
 	}
 	
 	/** Bucle que se utilizara para que el usuario eliga una opcion de forma optima */
-	public void buclePrincipal() {
+	public static void buclePrincipal() {
 		int opción = -1;
 		
 		menú.mostrarTitulo();
@@ -53,11 +54,21 @@ public class ControlUFC {
 	            case 3:
 	            	borrarPeleador();
 	            	break;
-	            case 4:
-	            	ImportacionArchivo.importar();
-	             	break;
-	            case 5:
-	            	ImportacionArchivo.exportar();
+	            case 4: {
+	            	ImportacionArchivo.exportar(almacen.devolverElementos());
+	                break;
+	            }
+	            
+	            case 5: {
+	                List<Peleadores> listaCargada = ImportacionArchivo.importar();
+	                for(Peleadores p : listaCargada) {
+	                    almacen.alta(p);
+	                }
+	                break;
+	            }
+	            case 6:
+	            	listarPeleadores();
+	            	break;
 	            case 0:
 	            	break;
 	            default:
@@ -89,7 +100,6 @@ public class ControlUFC {
         double peso = VistaGeneral.pedirNúmero("Peso del peleador:");
         nuevoPeleador.calcularCategoria(peso);
         
-        VistaGeneral.mostrarTexto("¿Deseas asignarle un apodo? (s/n)");
         if(VistaGeneral.pedirConfirmacion("¿Deseas asignarle un apodo?")) {
             VistaGeneral.mostrarTexto("Introduce el apodo:");
             String apodo = VistaGeneral.getScEntrada().nextLine();
@@ -98,6 +108,7 @@ public class ControlUFC {
         
         almacen.alta(nuevoPeleador);
         VistaGeneral.mostrarAviso("Peleador añadido de forma exitosa");
+        buclePrincipal();
 	}
 	
 	/** Lista a los peleadores creados utilizando la posicion indicada anteriormente */
@@ -145,6 +156,16 @@ public class ControlUFC {
 		
 	    almacen.borrarElemento(peleador);
 	   
+	}
+	
+	/**
+	 * Listara todos los peleadores que se encuentren en el almacaen.
+	 */
+	public static void listarPeleadores() {
+		for(int i = 0; i < almacen.contarElementos(); i++) {
+			System.out.println(almacen.getElemento(i).devolverDatos() + " " + almacen.getElemento(i).devolverEstadisticas());
+		}
+		buclePrincipal();
 	}
 	
 	/** Lanza un aviso cuando se quiere indicar una opcion que no esta entre las indicadas */
