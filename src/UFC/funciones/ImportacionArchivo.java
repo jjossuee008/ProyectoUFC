@@ -1,6 +1,9 @@
 package UFC.funciones;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import UFC.peleadores.Peleadores;
 import UFC.vistas.VistaGeneral;
@@ -16,7 +19,7 @@ public class ImportacionArchivo {
 	    // 1. Verificación de seguridad: ¿Hay algo que guardar?
 	    if (lista == null || lista.isEmpty()) {
 	        System.out.println("[DEBUG] La lista está vacía, por eso el archivo sale en blanco.");
-	        ControlUFC.buclePrincipal();
+
 	        return;
 	    }
 
@@ -25,37 +28,52 @@ public class ImportacionArchivo {
 	        
 	        for (Peleadores p : lista) {
 	            // Escribimos los datos puros separados por ";"
-	            pw.println(p.getNombre() + ";" + p.getRanking());
+	            pw.println(p.getNombre() + ";" + p.getRanking() + ";" + p.getVictorias() + ";" + p.getDerrotas() + ";" + p.getNocauts());
 	            // Este print es para que TÚ veas en la consola que está trabajando
 	            System.out.println("[DEBUG] Escribiendo en archivo a: " + p.getNombre());
-	            ControlUFC.buclePrincipal();
 	        }
 	        
 	        pw.flush(); 
 	        
 	    } catch (java.io.IOException e) {
 	        System.out.println("[ERROR] No se pudo escribir: " + e.getMessage());
-	        ControlUFC.buclePrincipal();
 	    }
 	}
 
+	/**
+     * Lee el archivo 'datos.txt' y reconstruye los objetos Peleadores.
+     * @return Una lista con los peleadores cargados.
+     */
     public static List<Peleadores> importar() {
-        List<Peleadores> auxiliar = new java.util.ArrayList<>();
-        java.io.File archivo = new java.io.File("datos.txt");
+        List<Peleadores> auxiliar = new ArrayList<>();
+        File archivo = new File("datos.txt");
 
         if (!archivo.exists()) {
-            VistaGeneral.mostrarAviso("No existe el archivo 'datos.txt' para importar.");
+            VistaGeneral.mostrarAviso("No existe el archivo 'datos.txt'.");
             return auxiliar;
         }
 
-        try (java.util.Scanner lector = new java.util.Scanner(archivo)) {
+        try (Scanner lector = new Scanner(archivo)) {
             while (lector.hasNextLine()) {
-                String[] t = lector.nextLine().split(";");
-                Peleadores p = new Peleadores(t[0], t[1], Integer.parseInt(t[2]), 0, 0);
-                auxiliar.add(p);
+                String linea = lector.nextLine();
+                if (linea.trim().isEmpty()) continue; 
+
+                String[] t = linea.split(";");
+             
+                if (t.length >= 5) {
+                    Peleadores p = new Peleadores(
+                        t[0],                        // Nombre
+                        t[1],                        // Ranking
+                        Integer.parseInt(t[2]),      // Victorias
+                        Integer.parseInt(t[3]),      // Derrotas
+                        Integer.parseInt(t[4])       // Nocauts
+                    );
+                    auxiliar.add(p);
+                }
             }
+            VistaGeneral.mostrarAviso("Importación completada.");
         } catch (Exception e) {
-            VistaGeneral.mostrarAviso("Error de formato en el archivo.");
+            VistaGeneral.mostrarAviso("Error de formato al importar datos.");
         }
         return auxiliar;
     }

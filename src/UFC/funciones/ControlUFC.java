@@ -36,48 +36,46 @@ public class ControlUFC {
 	}
 	
 	/** Bucle que se utilizara para que el usuario eliga una opcion de forma optima */
-	public static void buclePrincipal() {
-		int opción = -1;
-		
-		menú.mostrarTitulo();
-		menú.mostrarOpciones();
-        opción = menú.pedirOpción(); 
-         
-        do {
-	        switch(opción) {
-	            case 1:
-	            	ejecutarAlta();
-	            	break;
-	            case 2:
-	            	listarRanking();
-	            	break;
-	            case 3:
-	            	borrarPeleador();
-	            	break;
-	            case 4: {
-	            	ImportacionArchivo.exportar(almacen.devolverElementos());
-	                break;
+	public void buclePrincipal() {
+	    int opción = -1; // Inicializamos
+
+	    do {
+	        menú.mostrarTitulo();
+	        menú.mostrarOpciones();
+	        
+	        try {
+	            // SOLUCIÓN: Pedimos la opción AQUÍ adentro
+	            opción = menú.pedirOpción(); 
+
+	            switch (opción) {
+	                case 1: 
+	                	ejecutarAlta(); 
+	                	break; 
+	                case 2: 
+	                	listarRanking(); 
+	                	break;
+	                case 3: 
+	                	borrarPeleador(); 
+	                	break;
+	                case 4: 
+	                	ImportacionArchivo.exportar(almacen.devolverElementos()); 
+	                	break;
+	                case 5: 
+	                	ImportacionArchivo.importar();
+	                	break; 
+	                case 6: 
+	                	listarPeleadores(); 
+	                	break;
+	                case 0: 
+	                	VistaGeneral.mostrarAviso("Saliendo..."); 
+	                	break;
+	                default: opciónNoDisponible(); break;
 	            }
-	            
-	            case 5: {
-	                List<Peleadores> listaCargada = ImportacionArchivo.importar();
-	                for(Peleadores p : listaCargada) {
-	                    almacen.alta(p);
-	                }
-	                break;
-	            }
-	            case 6:
-	            	listarPeleadores();
-	            	break;
-	            case 0:
-	            	break;
-	            default:
-	                opciónNoDisponible();
-	                break;
+	        } catch (Exception e) {
+	            VistaGeneral.mostrarAviso("Error: " + e.getMessage());
 	        }
-        } while(opción != 0);
-        
-        VistaGeneral.mostrarAviso("FIN");
+	        
+	    } while (opción != 0); 
 	}
 	
 	/** Creara un peleador a traves de {@link Peleadores} y la añadira al almacen utilizando {@link ConjuntoPeleadores} */
@@ -108,7 +106,6 @@ public class ControlUFC {
         
         almacen.alta(nuevoPeleador);
         VistaGeneral.mostrarAviso("Peleador añadido de forma exitosa");
-        buclePrincipal();
 	}
 	
 	/** Lista a los peleadores creados utilizando la posicion indicada anteriormente */
@@ -164,8 +161,7 @@ public class ControlUFC {
 	public static void listarPeleadores() {
 		for(int i = 0; i < almacen.contarElementos(); i++) {
 			System.out.println(almacen.getElemento(i).devolverDatos() + " " + almacen.getElemento(i).devolverEstadisticas());
-		}
-		buclePrincipal();
+		}   
 	}
 	
 	/** Lanza un aviso cuando se quiere indicar una opcion que no esta entre las indicadas */
