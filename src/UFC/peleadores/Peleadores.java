@@ -123,7 +123,7 @@ public class Peleadores {
 	public String devolverEstadisticas() {
 		String datos;
 		
-		datos = String.format("||Peleador %s|| Victorias: %d, Posicion: %s, Derrotas: %d, KOs: %d", nombre,puestoRanking,victorias,derrotas,nocauts);
+		datos = String.format("||Peleador %s|| Posicion: %s, Victorias: %d, Derrotas: %d, KOs: %d", nombre,puestoRanking,victorias,derrotas,nocauts);
 		return datos;
 	}
 	
