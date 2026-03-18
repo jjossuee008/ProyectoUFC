@@ -9,13 +9,15 @@ import UFC.vistas.*;
  * 	usando {@link VistaMenú} Podremos realizar diferentes acciones.
  * 
  * 	@auhor Josué Mateos (jjossuee008)
- * 	@version 1.5 (17032026)
+ * 	@version 2.0 (18032026)
  */
 public class ControlUFC {
-
+	
+	/** Almacen que guardara a los diferentes peleadores */
 	private static ConjuntoPeleadores almacen;
+	/** Establece la forma del menu a traves de {@link VistaMenú} */
 	private static VistaMenú menú;
-	// Las constantes para las opciones del menú
+	/** Indica las diferentes opciones que tendra el menu */
 	private static final List<String> OPCIONES = List.of(
 	    "Dar de alta peleador",
 	    "Listar ranking",
@@ -24,11 +26,15 @@ public class ControlUFC {
 	    "Importar desde archivo"
 	);
 	
+	/**
+	 * Inicia el almacen y el menu
+	 */
 	public ControlUFC() {
 		almacen = new ConjuntoPeleadores();
 		menú = new VistaMenú("Menu UFC", OPCIONES);
 	}
 	
+	/** Bucle que se utilizara para que el usuario eliga una opcion de forma optima */
 	public static void buclePrincipal() {
 		int opción = -1;
 		
@@ -48,10 +54,10 @@ public class ControlUFC {
 	            	borrarPeleador();
 	            	break;
 	            case 4:
-	            	importar();
+	            	ImportacionArchivo.importar();
 	             	break;
 	            case 5:
-	            	exportar();
+	            	ImportacionArchivo.exportar();
 	            case 0:
 	            	break;
 	            default:
@@ -63,6 +69,7 @@ public class ControlUFC {
         VistaGeneral.mostrarAviso("FIN");
 	}
 	
+	/** Creara un peleador a traves de {@link Peleadores} y la añadira al almacen utilizando {@link ConjuntoPeleadores} */
 	public static void ejecutarAlta() {
 		Peleadores nuevoPeleador;
 		VistaGeneral.mostrarTitulo2("ALTA DE NUEVO PELEADOR");
@@ -93,30 +100,55 @@ public class ControlUFC {
         VistaGeneral.mostrarAviso("Peleador añadido de forma exitosa");
 	}
 	
+	/** Lista a los peleadores creados utilizando la posicion indicada anteriormente */
 	public static void listarRanking() {
-		VistaGeneral.mostrarTexto("Indica la categoria que deseas:");
-		String categoria = VistaGeneral.getScEntrada().nextLine();
-		
-		for(int i = 0; i < almacen.contarElementos(); i++) {
-			if(almacen.getElemento(i).getCategoria().equals(categoria)) {
-				
-			};
-		}
+	    VistaGeneral.mostrarTexto("Indica la categoría que deseas (ej: PESADO, PLUMA):");
+	    String categoriaBusqueda = VistaGeneral.getScEntrada().nextLine();
+	    
+	    VistaGeneral.mostrarTitulo1("RANKING: " + categoriaBusqueda);
+	    
+	    boolean encontrado = false;
+	    List<Peleadores> lista = almacen.devolverElementos();
+
+	    for (Peleadores p : lista) {
+	        if (p.getCategoria().equalsIgnoreCase(categoriaBusqueda)) {
+	            
+	            if (p.getRanking().equalsIgnoreCase("CAMPEON")) {
+	                VistaGeneral.mostrarTexto("[ORO] " + p.devolverDatos());
+	            } else {
+	                try {
+	                    int puesto = Integer.parseInt(p.getRanking());
+	                    VistaGeneral.mostrarTexto("#" + puesto + " - " + p.devolverDatos());
+	                } catch (NumberFormatException e) {
+	                    VistaGeneral.mostrarTexto("Puesto: " + p.getRanking() + " - " + p.devolverDatos());
+	                }
+	            }
+	            encontrado = true;
+	        }
+	    }
+
+	    if (!encontrado) {
+	        VistaGeneral.mostrarAviso("No hay peleadores registrados en la categoría: " + categoriaBusqueda);
+	    }
+	    
+	    VistaGeneral.pausa("Presiona Enter para volver al menú");
 	}
 	
+	/**
+	 * Borrara el peleador indicando su nombre.
+	 */
 	public static void borrarPeleador() {
+		String peleador;
 		
+		VistaGeneral.mostrarTexto("Nombre del peleador que se desea borrar:");
+		peleador = VistaGeneral.getScEntrada().nextLine();
+		
+	    almacen.borrarElemento(peleador);
+	   
 	}
 	
-	public static void importar() {
-		
-	}
-	
-	public static void exportar() {
-		
-	}
-	
+	/** Lanza un aviso cuando se quiere indicar una opcion que no esta entre las indicadas */
 	public static void opciónNoDisponible() {
-		
+		VistaGeneral.mostrarAviso("Indica una opcion disponible");
 	}
 }
