@@ -35,7 +35,7 @@ public class ControlUFC {
 	}
 	
 	/** Bucle que se utilizara para que el usuario eliga una opcion de forma optima */
-	public static void buclePrincipal() {
+	public void buclePrincipal() {
 		int opción = -1;
 		
 		menú.mostrarTitulo();
