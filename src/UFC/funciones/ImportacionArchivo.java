@@ -15,7 +15,7 @@ public class ImportacionArchivo {
 	private static ConjuntoPeleadores almacen = new ConjuntoPeleadores();
 	
 	/** Sacara los datos en un archivo fuera del programa */
-	public void exportar() {
+	public static void exportar() {
 	    try (java.io.PrintWriter pw = new java.io.PrintWriter("datos.txt")) {
 	        for (Peleadores p : almacen.devolverElementos()) {
 	            // Escribimos los datos básicos separados por ";"
@@ -28,7 +28,7 @@ public class ImportacionArchivo {
 	}
 	
 	/** Añadira los datos de un archivo que indique el usuario */
-	public void importar() {
+	public static void importar() {
 	    java.io.File archivo = new java.io.File("datos.txt");
 	    if (!archivo.exists()) {
 	        VistaGeneral.mostrarAviso("No hay datos previos para cargar.");
