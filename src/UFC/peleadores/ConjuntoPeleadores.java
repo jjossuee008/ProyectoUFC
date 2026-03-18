@@ -3,11 +3,13 @@ package UFC.peleadores;
 import java.util.ArrayList;
 import java.util.List;
 
+import UFC.vistas.VistaGeneral;
+
 /** 
  * A partir de {@link Peleadores} podremos crear un almacen donde guardar a todos los peleadores creados si asi lo queremos.
  * Con este almacen podremos realizar una serie de opciones.
  * @author Josué Mateos (jjossuee008)
- * @version 1.5 (17022026)
+ * @version 2.0 (18022026)
  */
 public class ConjuntoPeleadores {
 	
@@ -35,13 +37,22 @@ public class ConjuntoPeleadores {
 	 * @param nombre del peleador que se desea eliminar.
 	 */
 	public void borrarElemento(String nombre) {
+		boolean encontrado = false;
+
 	    for (int i = 0; i < listaPeleadores.size(); i++) { 
 	        Peleadores p = listaPeleadores.get(i);
 	        
 	        if (p.getNombre().equalsIgnoreCase(nombre)) {
 	            listaPeleadores.remove(i);
-	            i--; 
+	            i--;
+	            encontrado = true;
 	        }
+	    }
+
+	    if (!encontrado) {
+	        VistaGeneral.mostrarAviso("No se ha encontrado el peleador: " + nombre);
+	    } else {
+	        VistaGeneral.mostrarAviso("Peleador eliminado con éxito.");
 	    }
 	}
 
