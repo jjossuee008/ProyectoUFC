@@ -107,11 +107,8 @@ public class Peleadores {
 	 */
 	public String devolverDatos() {
 		String datos;
-		if(categoriaPeso == null) {
-			datos = String.format("||PELEADOR|| Nombre: %s, Apodo: %s, Categoria: no asignada", nombre, apodo);
-		} else {
-			datos = String.format("||PELEADOR|| Nombre: %s, Apodo: %s, Categoria: %s", nombre, apodo, categoriaPeso);
-		}
+		
+		datos = String.format("||PELEADOR|| Nombre: %s, Apodo: %s, Categoria: %s", nombre, apodo, categoriaPeso);
 		
 		return datos;
 	}
@@ -151,6 +148,27 @@ public class Peleadores {
 	 */
 	public String getCategoria() {
 		return categoriaPeso;
+	}
+	
+	/**
+	 * @return Devuelve el numero de victorias del peleador.
+	 */
+	public int getVictorias() {
+		return victorias;
+	}
+	
+	/**
+	 * @return Devuelve el numero de derrotas del peleador.
+	 */
+	public int getDerrotas() {
+		return derrotas;
+	}
+	
+	/**
+	 * @return Devuelve el numero de nocauts del peleador.
+	 */
+	public int getNocauts() {
+		return nocauts;
 	}
 	
 }
