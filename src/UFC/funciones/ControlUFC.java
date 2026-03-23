@@ -60,9 +60,13 @@ public class ControlUFC {
 	                case 4: 
 	                	ImportacionArchivo.exportar(almacen.devolverElementos()); 
 	                	break;
-	                case 5: 
-	                	ImportacionArchivo.importar();
-	                	break; 
+	                case 5:
+	                    List<Peleadores> listaCargada = ImportacionArchivo.importar();
+	                   
+	                    almacen.devolverElementos().addAll(listaCargada);
+	                    
+	                    VistaGeneral.mostrarAviso("Se han sumado " + listaCargada.size() + " peleadores.");
+	                    break;
 	                case 6: 
 	                	listarPeleadores(); 
 	                	break;

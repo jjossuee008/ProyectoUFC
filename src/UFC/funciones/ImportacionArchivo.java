@@ -46,7 +46,8 @@ public class ImportacionArchivo {
      */
     public static List<Peleadores> importar() {
         List<Peleadores> auxiliar = new ArrayList<>();
-        File archivo = new File("datos.txt");
+        String nombreArchivo = VistaGeneral.getScEntrada().nextLine();
+        File archivo = new File(nombreArchivo);
 
         if (!archivo.exists()) {
             VistaGeneral.mostrarAviso("No existe el archivo 'datos.txt'.");
