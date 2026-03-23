@@ -1,1 +1,4 @@
 /bin/
+# No ignores la carpeta de scripts ni los archivos .bat
+!script/
+!*.bat
