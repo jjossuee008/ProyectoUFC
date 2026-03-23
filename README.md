@@ -2,7 +2,7 @@
 
 Sencilla pero potente aplicación de consola desarrollada en **Java 25** para gestionar una base de datos de peleadores de la UFC. Este proyecto permite administrar récords, rankings y automatizar la clasificación por categorías de peso.
 
-## 🚀 Características
+## Características
 * **CRUD Completo:** Alta, baja y listado de peleadores.
 * **Lógica de Negocio:** Clasificación automática en categorías de peso (Strawweight hasta Heavyweight).
 * **Persistencia:** Exportación e importación de datos mediante archivos `.txt` (formato CSV con `;`).
